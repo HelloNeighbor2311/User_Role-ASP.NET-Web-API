@@ -14,7 +14,10 @@ namespace User_Role.Services
                 var existingRoleId = existingRole.Select(s => s.Id).ToList();
 
                 var invalidRoleId = usersRequest.RolesId.Where(s => !existingRoleId.Contains(s)).ToList();
-                usersRequest.RolesId.Except(invalidRoleId);
+                if (invalidRoleId.Any())
+                {
+                    return null;
+                }
             }
             var user = new Users
             {
