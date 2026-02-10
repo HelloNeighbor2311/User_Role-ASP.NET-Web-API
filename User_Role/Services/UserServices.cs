@@ -19,9 +19,9 @@ namespace User_Role.Services
             return MapUserResponse(createdUserResponse);
         }
 
-        public Task<bool> AssignRoleForUserAsync(int userId, int roleId)
+        public async Task<bool> AssignRoleForUserAsync(int userId, int roleId)
         {
-            throw new NotImplementedException();
+            return await repository.AssignRoleForUser(userId, roleId);
         }
 
         public async Task<bool> DeleteUserAsync(int id)

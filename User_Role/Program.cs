@@ -19,6 +19,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRespository>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRoleServices, RoleServices>();
 
 var app = builder.Build();
 

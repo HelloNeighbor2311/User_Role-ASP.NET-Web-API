@@ -6,9 +6,12 @@ namespace User_Role.Respositories
 {
     public class UserRespository(AppDbContext context) : IUserRepository
     {
-        public Task<bool> AssignRoleForUser(int userId, int roleId)
+        public async Task<bool> AssignRoleForUser(int userId, int roleId)
         {
-            throw new NotImplementedException();
+            var userRole = new UsersRoles { RolesId = roleId, UsersId = userId };
+            context.usersRoles.Add(userRole);
+            await context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<Users> CreateUserAsync(Users obj)
