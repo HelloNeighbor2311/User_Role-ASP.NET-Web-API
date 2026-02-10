@@ -4,57 +4,79 @@ using User_Role.Respositories;
 
 namespace User_Role.Services
 {
-    public class UserServices (IUserRepository repository): IUserServices
+    public class UserServices (IUserRepository userRepository, IRoleRepository roleRepository): IUserServices
     {
         public async Task<UsersResponse> AddUserAsync(CreateUserRequest usersRequest)
         {
+            if (usersRequest.RolesId != null && usersRequest.RolesId.Any())
+            {
+                var existingRole = await roleRepository.GetAllRolesAsync();
+                var existingRoleId = existingRole.Select(s => s.Id).ToList();
+
+                var invalidRoleId = usersRequest.RolesId.Where(s => !existingRoleId.Contains(s)).ToList();
+                usersRequest.RolesId.Except(invalidRoleId);
+            }
             var user = new Users
             {
                 Username = usersRequest.Username,
-                Password =  usersRequest.Password,
+                Password = usersRequest.Password,
                 Name = usersRequest.Name,
-                CreatedDate = DateTime.UtcNow
+                CreatedDate = DateTime.UtcNow,
+                userRoles = new List<UsersRoles>()
             };
-            var createdUserResponse = await repository.CreateUserAsync(user);
+            if (usersRequest.RolesId != null && usersRequest.RolesId.Any())
+            {
+                foreach (var item in usersRequest.RolesId)
+                {
+                    user.userRoles.Add(new UsersRoles { RolesId = item });
+                }
+            }
+            var createdUserResponse = await userRepository.CreateUserAsync(user);
             return MapUserResponse(createdUserResponse);
         }
 
         public async Task<bool> AssignRoleForUserAsync(int userId, int roleId)
         {
-            return await repository.AssignRoleForUser(userId, roleId);
+            return await userRepository.AssignRoleForUser(userId, roleId);
         }
 
         public async Task<bool> DeleteUserAsync(int id)
         {
-            var existedUser = await repository.GetUserByIdAsync(id);
+            var existedUser = await userRepository.GetUserByIdAsync(id);
             if (existedUser is null) return false;
-            await repository.DeleteUserAsync(existedUser);
+            await userRepository.DeleteUserAsync(existedUser);
             return true;
         }
 
         public async Task<List<UsersResponse>> GetAllUsersAsync()
         {
-            var users = await repository.GetAllUsersAsync();
+            var users = await userRepository.GetAllUsersAsync();
             return users.Select(u => MapUserResponse(u)).ToList();
         }
 
         public async Task<UsersResponse?> GetUserByIdAsync(int id)
         {
-            var user = await repository.GetUserByIdAsync(id);
-            return (MapUserResponse(user));
+            try
+            {
+                var user = await userRepository.GetUserByIdAsync(id);
+                return (MapUserResponse(user));
+            }catch(NullReferenceException e)
+            {
+                return null;
+            }
         }
 
         public async Task<bool> RemoveRoleForUserAsync(int userId, int roleId)
         {
-            return await repository.RemoveRoleForUser(userId, roleId);
+            return await userRepository.RemoveRoleForUser(userId, roleId);
         }
 
         public async Task<bool> UpdateUserAsync(int id, UpdateUserRequest users)
         {
-            var existedUser = await repository.GetUserByIdAsync(id);
+            var existedUser = await userRepository.GetUserByIdAsync(id);
             if (existedUser is null) return false;
             existedUser.Name = users.Name;
-            var updatedUser = await repository.UpdateUserAsync(existedUser);
+            var updatedUser = await userRepository.UpdateUserAsync(existedUser);
             return true;
         }
 

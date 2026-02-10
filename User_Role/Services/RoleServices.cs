@@ -33,8 +33,14 @@ namespace User_Role.Services
 
         public async Task<RolesResponse?> GetRoleByIdAsync(int id)
         {
-            var role = await repository.GetRolesByIdAsync(id);
-            return MapRoleResponse(role);
+            try
+            {
+                var role = await repository.GetRolesByIdAsync(id);
+                return MapRoleResponse(role);
+            }catch(NullReferenceException e)
+            {
+                return null;
+            }
         }
 
         public async Task<bool> UpdateRoleAsync(int id, UpdateRoleRequest role)

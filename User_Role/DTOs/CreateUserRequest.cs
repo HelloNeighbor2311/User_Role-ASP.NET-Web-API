@@ -11,5 +11,7 @@ namespace User_Role.DTOs
         public string? Name { get; set; }
         public DateTime CreatedDate { get; set; }
 
+        public List<int> RolesId { get; set; }
+
     }
 }

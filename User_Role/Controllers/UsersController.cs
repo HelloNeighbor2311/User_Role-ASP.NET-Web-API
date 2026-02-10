@@ -23,7 +23,9 @@ namespace User_Role.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<UsersResponse>> GetUserById(int id)
         {
-            return await services.GetUserByIdAsync(id);
+            var user = await services.GetUserByIdAsync(id);
+            if (user is null) return NotFound("The User with the given Id was not found");
+            return Ok(user);
         }
 
         [HttpPut("{id}")]
