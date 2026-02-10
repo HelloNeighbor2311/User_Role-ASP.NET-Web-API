@@ -37,9 +37,13 @@ namespace User_Role.Respositories
             return await context.users.Include(u => u.userRoles).ThenInclude(u => u.role).FirstOrDefaultAsync(s=>s.Id == id);
         }
 
-        public Task<bool> RemoveRoleForUser(int id, int roleId)
+        public async Task<bool> RemoveRoleForUser(int userId, int roleId)
         {
-            throw new NotImplementedException();
+            var existed = await context.usersRoles.FirstOrDefaultAsync(u => u.UsersId == userId && u.RolesId == roleId);
+            if (existed is null) return false;
+            context.usersRoles.Remove(existed);
+            await context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<Users> UpdateUserAsync(Users obj)

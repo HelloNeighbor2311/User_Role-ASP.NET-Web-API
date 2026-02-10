@@ -38,6 +38,18 @@ namespace User_Role.Controllers
             var deleted = await services.DeleteUserAsync(id);
             return deleted ? NoContent() : NotFound("The User with the given Id was not found");
         }
+        [HttpDelete("{userId}/roles/{roleId}")]
+        public async Task<ActionResult> RemoveRoleForuser(int userId, int roleId)
+        {
+            var removed = await services.RemoveRoleForUserAsync(userId, roleId);
+            return removed ? NoContent() : NotFound("The UserRole with the given userId and roleId was not found");
+        }
+        [HttpPut("{userId}/roles/{roleId}")]
+        public async Task<ActionResult> AssignRoleForuser(int userId, int roleId)
+        {
+            var assigned = await services.AssignRoleForUserAsync(userId, roleId);
+            return assigned ? NoContent() : NotFound("The UserRole with the given userId and roleId was not found");
+        }
 
     }
 }

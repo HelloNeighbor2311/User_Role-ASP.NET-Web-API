@@ -10,7 +10,7 @@ namespace User_Role.Respositories
         Task<Users> UpdateUserAsync(Users obj);
         Task DeleteUserAsync(Users user);
         Task<bool> AssignRoleForUser(int userId, int roleId);
-        Task<bool> RemoveRoleForUser(int id, int roleId);
+        Task<bool> RemoveRoleForUser(int userId, int roleId);
 
     }
 }

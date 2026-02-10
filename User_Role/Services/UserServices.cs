@@ -44,9 +44,9 @@ namespace User_Role.Services
             return (MapUserResponse(user));
         }
 
-        public Task<bool> RemoveRoleForUserAsync(int userId, int roleId)
+        public async Task<bool> RemoveRoleForUserAsync(int userId, int roleId)
         {
-            throw new NotImplementedException();
+            return await repository.RemoveRoleForUser(userId, roleId);
         }
 
         public async Task<bool> UpdateUserAsync(int id, UpdateUserRequest users)
