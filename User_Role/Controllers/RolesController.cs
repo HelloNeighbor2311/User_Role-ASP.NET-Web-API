@@ -24,5 +24,11 @@ namespace User_Role.Controllers
             var role = await services.AddRoleAsync(request);
             return CreatedAtAction(nameof(GetRoleById), new { id = request.Id }, role);
         }
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateRole(int id, UpdateRoleRequest request)
+        {
+            var updated = await services.UpdateRoleAsync(id, request);
+            return updated ? NoContent() : NotFound("The Role with the given Id was not found");
+        }
     }
 }
