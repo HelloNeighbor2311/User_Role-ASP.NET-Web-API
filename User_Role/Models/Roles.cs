@@ -7,6 +7,6 @@
 
         public string? Desrciption { get; set; }
 
-        public ICollection<UsersRoles> userRoles { get; set; }
+        public ICollection<UsersRoles>? userRoles { get; set; }
     }
 }

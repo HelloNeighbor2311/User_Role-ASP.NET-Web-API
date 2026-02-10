@@ -6,9 +6,9 @@ namespace User_Role.Datas
 {
     public class AppDbContext(DbContextOptions<AppDbContext> options): DbContext(options)
     {
-        DbSet<Users> users => Set<Users>();
-        DbSet<Roles> roles => Set<Roles>();
-        DbSet<UsersRoles> usersRoles => Set<UsersRoles>();
+        public DbSet<Users> users => Set<Users>();
+        public DbSet<Roles> roles => Set<Roles>();
+        public DbSet<UsersRoles> usersRoles => Set<UsersRoles>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -9,7 +9,7 @@
         public string? Name { get; set; }
         public DateTime CreatedDate { get; set; }
 
-        public ICollection<UsersRoles> userRoles { get; set; }
+        public ICollection<UsersRoles>? userRoles { get; set; }
 
     }
 }

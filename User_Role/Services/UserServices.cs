@@ -1,13 +1,22 @@
 ﻿using User_Role.DTOs;
 using User_Role.Models;
+using User_Role.Respositories;
 
 namespace User_Role.Services
 {
-    public class UserServices : IUserServices
+    public class UserServices (IUserRespository repository): IUserServices
     {
-        public Task<UsersResponse> AddUserAsync(UsersResponse users)
+        public async Task<UsersResponse> AddUserAsync(CreateUserRequest usersRequest)
         {
-            throw new NotImplementedException();
+            var user = new Users
+            {
+                Username = usersRequest.Username,
+                Password =  usersRequest.Password,
+                Name = usersRequest.Name,
+                CreatedDate = DateTime.UtcNow
+            };
+            var createdUserResponse = await repository.CreateAsync(user);
+            return MapUserResponse(createdUserResponse);
         }
 
         public Task<bool> AssignRoleForUserAsync(int userId, int roleId)
@@ -20,9 +29,10 @@ namespace User_Role.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<UsersResponse>> GetAllUsersAsync()
+        public async Task<List<UsersResponse>> GetAllUsersAsync()
         {
-            throw new NotImplementedException();
+            var users = await repository.GetAllAsync();
+            return users.Select(u => MapUserResponse(u)).ToList();
         }
 
         public Task<UsersResponse?> GetUserByIdAsync(int id)
@@ -38,6 +48,21 @@ namespace User_Role.Services
         public Task<bool> UpdateUserAsync(int id, Users users)
         {
             throw new NotImplementedException();
+        }
+
+
+        private UsersResponse MapUserResponse(Users user)
+        {
+            var userResponse = new UsersResponse
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Username = user.Username,
+                CreatedDate = user.CreatedDate,
+                Roles = user.userRoles?.Select(s => s.role.RoleName).ToList() ?? new List<string?>()
+            };
+            return userResponse;
+
         }
     }
 }
