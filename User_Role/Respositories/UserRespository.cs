@@ -18,9 +18,11 @@ namespace User_Role.Respositories
             return obj;
         }
 
-        public Task<bool> DeleteUserAsync()
+        public async Task DeleteUserAsync(Users user)
         {
-            throw new NotImplementedException();
+            context.users.Remove(user);
+
+            await context.SaveChangesAsync();
         }
 
         public async Task<List<Users>> GetAllUsersAsync() => await context.users.Include(u => u.userRoles).ThenInclude(u=>u.role).ToListAsync();

@@ -24,9 +24,12 @@ namespace User_Role.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteUserAsync(int id)
+        public async Task<bool> DeleteUserAsync(int id)
         {
-            throw new NotImplementedException();
+            var existedUser = await repository.GetUserByIdAsync(id);
+            if (existedUser is null) return false;
+            await repository.DeleteUserAsync(existedUser);
+            return true;
         }
 
         public async Task<List<UsersResponse>> GetAllUsersAsync()
