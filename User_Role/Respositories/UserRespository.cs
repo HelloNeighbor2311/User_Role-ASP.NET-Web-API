@@ -6,6 +6,11 @@ namespace User_Role.Respositories
 {
     public class UserRespository(AppDbContext context) : IUserRepository
     {
+        public Task<bool> AssignRoleForUser(int userId, int roleId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Users> CreateUserAsync(Users obj)
         {
             context.users.Add(obj);
@@ -27,9 +32,16 @@ namespace User_Role.Respositories
             return await context.users.Include(u => u.userRoles).ThenInclude(u => u.role).FirstOrDefaultAsync(s=>s.Id == id);
         }
 
-        public Task<bool> UpdateUserAsync(int id, Users obj)
+        public Task<bool> RemoveRoleForUser(int id, int roleId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Users> UpdateUserAsync(Users obj)
+        {
+            context.users.Update(obj);
+            await context.SaveChangesAsync();
+            return obj;
         }
     }
 }

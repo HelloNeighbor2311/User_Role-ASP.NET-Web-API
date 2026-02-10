@@ -46,9 +46,13 @@ namespace User_Role.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateUserAsync(int id, Users users)
+        public async Task<bool> UpdateUserAsync(int id, UpdateUserRequest users)
         {
-            throw new NotImplementedException();
+            var existedUser = await repository.GetUserByIdAsync(id);
+            if (existedUser is null) return false;
+            existedUser.Name = users.Name;
+            var updatedUser = await repository.UpdateUserAsync(existedUser);
+            return true;
         }
 
 

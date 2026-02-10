@@ -9,7 +9,7 @@ namespace User_Role.Services
 
         Task<UsersResponse?> GetUserByIdAsync(int id);
         Task<UsersResponse> AddUserAsync(CreateUserRequest usersRequest);
-        Task<bool> UpdateUserAsync(int id, Users users);
+        Task<bool> UpdateUserAsync(int id, UpdateUserRequest users);
         Task<bool> DeleteUserAsync(int id);
         Task<bool> AssignRoleForUserAsync(int userId, int roleId);
         Task<bool> RemoveRoleForUserAsync(int userId, int roleId);

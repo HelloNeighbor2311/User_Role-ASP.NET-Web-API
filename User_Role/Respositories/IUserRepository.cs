@@ -7,8 +7,10 @@ namespace User_Role.Respositories
         Task<List<Users>> GetAllUsersAsync();
         Task<Users> GetUserByIdAsync(int id);
         Task<Users> CreateUserAsync(Users obj);
-        Task<bool> UpdateUserAsync(int id, Users obj);
+        Task<Users> UpdateUserAsync(Users obj);
         Task<bool> DeleteUserAsync();
+        Task<bool> AssignRoleForUser(int userId, int roleId);
+        Task<bool> RemoveRoleForUser(int id, int roleId);
 
     }
 }
