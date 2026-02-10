@@ -17,9 +17,12 @@ namespace User_Role.Services
             return MapRoleResponse(createdRole);
         }
 
-        public Task<bool> DeleteRoleAsync(int id)
+        public async Task<bool> DeleteRoleAsync(int id)
         {
-            throw new NotImplementedException();
+            var existedRole = await repository.GetRolesByIdAsync(id);
+            if (existedRole is null) return false;
+            await repository.DeleteRoleAsync(existedRole);
+            return true;
         }
 
         public async Task<List<RolesResponse>> GetAllRolesAsync()

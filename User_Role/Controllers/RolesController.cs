@@ -30,5 +30,11 @@ namespace User_Role.Controllers
             var updated = await services.UpdateRoleAsync(id, request);
             return updated ? NoContent() : NotFound("The Role with the given Id was not found");
         }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var deleted = await services.DeleteRoleAsync(id);
+            return deleted ? NoContent() : NotFound("The Role with the given Id was not found");
+        }
     }
 }

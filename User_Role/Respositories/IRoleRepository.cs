@@ -8,6 +8,6 @@ namespace User_Role.Respositories
         Task<Roles> GetRolesByIdAsync(int id);
         Task<Roles> CreatRoleAsync(Roles obj);
         Task<Roles> UpdateRoleAsync(Roles obj);
-        Task DeleteRoleAsync(Roles user);
+        Task DeleteRoleAsync(Roles role);
     }
 }

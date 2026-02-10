@@ -12,9 +12,10 @@ namespace User_Role.Respositories
             await context.SaveChangesAsync();
             return obj;
         }
-        public Task DeleteRoleAsync(Roles user)
+        public async Task DeleteRoleAsync(Roles roles)
         {
-            throw new NotImplementedException();
+            context.roles.Remove(roles);
+            await context.SaveChangesAsync();
         }
 
         public async Task<List<Roles>> GetAllRolesAsync()
