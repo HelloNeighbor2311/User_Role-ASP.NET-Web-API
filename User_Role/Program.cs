@@ -16,7 +16,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IUserRespository, UserRespository>();
+builder.Services.AddScoped<IUserRepository, UserRespository>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 
 

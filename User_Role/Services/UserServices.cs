@@ -4,7 +4,7 @@ using User_Role.Respositories;
 
 namespace User_Role.Services
 {
-    public class UserServices (IUserRespository repository): IUserServices
+    public class UserServices (IUserRepository repository): IUserServices
     {
         public async Task<UsersResponse> AddUserAsync(CreateUserRequest usersRequest)
         {
@@ -15,7 +15,7 @@ namespace User_Role.Services
                 Name = usersRequest.Name,
                 CreatedDate = DateTime.UtcNow
             };
-            var createdUserResponse = await repository.CreateAsync(user);
+            var createdUserResponse = await repository.CreateUserAsync(user);
             return MapUserResponse(createdUserResponse);
         }
 
@@ -31,13 +31,14 @@ namespace User_Role.Services
 
         public async Task<List<UsersResponse>> GetAllUsersAsync()
         {
-            var users = await repository.GetAllAsync();
+            var users = await repository.GetAllUsersAsync();
             return users.Select(u => MapUserResponse(u)).ToList();
         }
 
-        public Task<UsersResponse?> GetUserByIdAsync(int id)
+        public async Task<UsersResponse?> GetUserByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var user = await repository.GetUserByIdAsync(id);
+            return (MapUserResponse(user));
         }
 
         public Task<bool> RemoveRoleForUserAsync(int userId, int roleId)

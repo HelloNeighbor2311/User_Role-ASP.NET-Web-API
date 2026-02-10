@@ -19,5 +19,12 @@ namespace User_Role.Controllers
         {
             return await services.GetAllUsersAsync();
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UsersResponse>> GetUserById(int id)
+        {
+            return await services.GetUserByIdAsync(id);
+        }
+
     }
 }
