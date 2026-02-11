@@ -1,4 +1,5 @@
-﻿using User_Role.DTOs;
+﻿using System.Diagnostics;
+using User_Role.DTOs;
 using User_Role.Models;
 using User_Role.Respositories;
 
@@ -67,6 +68,17 @@ namespace User_Role.Services
             {
                 return null;
             }
+        }
+
+        public async Task<PageResult<UsersResponse>> PaginationForUserAsync(PaginationParam param)
+        {
+            var users = await userRepository.GetPageResultUsersAsync(param.PageSize, param.PageNum);
+            
+            var listUserResponse =  users.Select(u => MapUserResponse(u)).ToList();
+            var count = listUserResponse.Count;
+            var pageResult = new PageResult<UsersResponse>(listUserResponse, count,param.PageNum, param.PageSize);
+            return pageResult;
+            
         }
 
         public async Task<bool> RemoveRoleForUserAsync(int userId, int roleId)

@@ -13,5 +13,6 @@ namespace User_Role.Services
         Task<bool> DeleteUserAsync(int id);
         Task<bool> AssignRoleForUserAsync(int userId, int roleId);
         Task<bool> RemoveRoleForUserAsync(int userId, int roleId);
+        Task<PageResult<UsersResponse>> PaginationForUserAsync(PaginationParam param);
     }
 }

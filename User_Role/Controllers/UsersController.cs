@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using User_Role.DTOs;
+using User_Role.Models;
 using User_Role.Services;
 
 namespace User_Role.Controllers
@@ -52,6 +54,10 @@ namespace User_Role.Controllers
             var assigned = await services.AssignRoleForUserAsync(userId, roleId);
             return assigned ? NoContent() : NotFound("The UserRole with the given userId and roleId was not found");
         }
-
+        [HttpGet("paged")]
+        public async Task<ActionResult<PageResult<UsersResponse>>> GetPagedUser([FromQuery]PaginationParam param)
+        {
+            return await services.PaginationForUserAsync(param);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using User_Role.Models;
 using User_Role.Datas;
 using Microsoft.EntityFrameworkCore;
+using User_Role.DTOs;
 
 namespace User_Role.Respositories
 {
@@ -29,14 +30,21 @@ namespace User_Role.Respositories
         }
 
         public async Task<List<Users>> GetAllUsersAsync() => await context.users.Include(u => u.userRoles).ThenInclude(u=>u.role).ToListAsync();
-        
-        
+
+        public async Task<IEnumerable<Users>> GetPageResultUsersAsync(int pageSize, int pageNum)
+        {
+            var query = context.users.Include(u => u.userRoles).ThenInclude(u => u.role).AsQueryable();
+            var sortedUsers =  await query.OrderBy(s => s.Id).Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync();
+            return sortedUsers;
+            
+        }
 
         public async Task<Users> GetUserByIdAsync(int id)
         {
             return await context.users.Include(u => u.userRoles).ThenInclude(u => u.role).FirstOrDefaultAsync(s=>s.Id == id);
         }
 
+        
         public async Task<bool> RemoveRoleForUser(int userId, int roleId)
         {
             var existed = await context.usersRoles.FirstOrDefaultAsync(u => u.UsersId == userId && u.RolesId == roleId);
@@ -52,5 +60,6 @@ namespace User_Role.Respositories
             await context.SaveChangesAsync();
             return obj;
         }
+
     }
 }

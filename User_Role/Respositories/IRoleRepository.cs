@@ -6,6 +6,7 @@ namespace User_Role.Respositories
     {
         Task<List<Roles>> GetAllRolesAsync();
         Task<Roles> GetRolesByIdAsync(int id);
+        Task<Roles> GetRolesByNameAsync(string name);
         Task<Roles> CreatRoleAsync(Roles obj);
         Task<Roles> UpdateRoleAsync(Roles obj);
         Task DeleteRoleAsync(Roles role);

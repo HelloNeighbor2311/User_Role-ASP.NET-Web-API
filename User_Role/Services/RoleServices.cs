@@ -43,6 +43,19 @@ namespace User_Role.Services
             }
         }
 
+        public async Task<RolesResponse?> GetRoleByNameAsync(string name)
+        {
+            try
+            {
+                var role = await repository.GetRolesByNameAsync(name);
+                return MapRoleResponse(role);
+            }
+            catch (NullReferenceException e)
+            {
+                return null;
+            }
+        }
+
         public async Task<bool> UpdateRoleAsync(int id, UpdateRoleRequest role)
         {
             var existedRole = await repository.GetRolesByIdAsync(id);
@@ -57,9 +70,10 @@ namespace User_Role.Services
         {
             var roleResponse = new RolesResponse
             {
+                Id = role.Id,
                 RoleName = role.RoleName,
                 Desrciption = role.Desrciption,
-                Users = role.userRoles?.Select(u => u.user.Name).ToList() ?? new List<string?>()
+                UserCount = role.userRoles.Count()
 
             };
             return roleResponse;

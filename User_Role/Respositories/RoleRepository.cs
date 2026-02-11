@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using User_Role.Datas;
+using User_Role.DTOs;
 using User_Role.Models;
 
 namespace User_Role.Respositories
@@ -26,6 +27,13 @@ namespace User_Role.Respositories
         {
             return await context.roles.Include(u => u.userRoles).ThenInclude(u => u.user).FirstOrDefaultAsync(u => u.Id == id);
         }
+
+        public async Task<Roles> GetRolesByNameAsync(string name)
+        {
+            string convertedName = name.ToLower();
+            return await context.roles.Include(u => u.userRoles).ThenInclude(u => u.user).FirstOrDefaultAsync(u => u.RoleName.ToLower() == convertedName);
+        }
+
         public async Task<Roles> UpdateRoleAsync(Roles obj)
         {
             context.roles.Update(obj);

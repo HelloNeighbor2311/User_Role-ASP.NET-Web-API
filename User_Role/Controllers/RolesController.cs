@@ -21,6 +21,14 @@ namespace User_Role.Controllers
             if (role is null) return NotFound("The Role with the given Id was not found");
             return Ok(role);
         }
+        [HttpGet("Name{name}")]
+        public async Task<ActionResult<RolesResponse>> GetRoleByName(string name)
+        {
+
+            var role = await services.GetRoleByNameAsync(name);
+            if (role is null) return NotFound("The Role with the given name was not found");
+            return Ok(role);
+        }
         [HttpPost]
         public async Task<ActionResult<RolesResponse>> CreateRole(CreateRoleRequest request)
         {

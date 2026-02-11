@@ -6,6 +6,7 @@ namespace User_Role.Services
     {
         Task<List<RolesResponse>> GetAllRolesAsync();
         Task<RolesResponse?> GetRoleByIdAsync(int id);
+        Task<RolesResponse?> GetRoleByNameAsync(string name);
         Task<RolesResponse> AddRoleAsync(CreateRoleRequest roleRequest);
         Task<bool> UpdateRoleAsync(int id, UpdateRoleRequest role);
         Task<bool> DeleteRoleAsync(int id);
