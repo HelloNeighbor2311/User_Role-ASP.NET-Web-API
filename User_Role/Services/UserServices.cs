@@ -72,13 +72,15 @@ namespace User_Role.Services
 
         public async Task<PageResult<UsersResponse>> PaginationForUserAsync(PaginationParam param)
         {
-            var users = await userRepository.GetPageResultUsersAsync(param.PageSize, param.PageNum);
-            
-            var listUserResponse =  users.Select(u => MapUserResponse(u)).ToList();
-            var count = listUserResponse.Count;
-            var pageResult = new PageResult<UsersResponse>(listUserResponse, count,param.PageNum, param.PageSize);
+            var users = await userRepository.GetPageResultUsersAsync(param.PageSize, param.PageNum) ?? Enumerable.Empty<Users>();
+
+            var listUserResponse = users.Select(u => MapUserResponse(u)).ToList();
+
+            // Use total count of users from repository to calculate TotalPages correctly
+            var totalCount = await userRepository.GetUsersCountAsync();
+
+            var pageResult = new PageResult<UsersResponse>(listUserResponse, totalCount, param.PageNum, param.PageSize);
             return pageResult;
-            
         }
 
         public async Task<bool> RemoveRoleForUserAsync(int userId, int roleId)
@@ -104,7 +106,10 @@ namespace User_Role.Services
                 Name = user.Name,
                 Username = user.Username,
                 CreatedDate = user.CreatedDate,
-                Roles = user.userRoles?.Select(s => s.role.RoleName).ToList() ?? new List<string?>()
+                // Avoid calling ToList() on a null sequence: check user.userRoles first
+                Roles = user.userRoles != null
+                    ? user.userRoles.Select(s => s.role?.RoleName ?? string.Empty).ToList()
+                    : new List<string>()
             };
             return userResponse;
 

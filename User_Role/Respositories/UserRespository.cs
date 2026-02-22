@@ -39,6 +39,11 @@ namespace User_Role.Respositories
             
         }
 
+        public async Task<int> GetUsersCountAsync()
+        {
+            return await context.users.CountAsync();
+        }
+
         public async Task<Users> GetUserByIdAsync(int id)
         {
             return await context.users.Include(u => u.userRoles).ThenInclude(u => u.role).FirstOrDefaultAsync(s=>s.Id == id);
